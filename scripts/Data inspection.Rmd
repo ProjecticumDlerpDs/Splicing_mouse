@@ -1,0 +1,80 @@
+---
+title: "Data inspection count tables"
+author: "Selina Dreesman"
+date: "`r Sys.Date()`"
+output:     
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r load libraries,verbose=FALSE, echo=FALSE}
+# Load necessary libraries
+library(Matrix)
+library(here)
+library(dplyr)
+
+```
+
+
+
+```{r read data & create object, echo=FALSE}
+# Read the count matrix
+counts_table <- readMM(here("raw_data/data/e85_count_matrix.mtx.gz"))
+```
+
+
+
+```{r check dimensions}
+# Print the dimensions of the dataset (number of rows and columns)
+dim(counts_table)
+```
+
+```{r print names}
+# Print the names of the columns & rows
+colnames(counts_table)
+rownames(counts_table)
+names(counts_table)
+print(counts_table)
+```
+
+
+```{r view head & tails}
+# View head and tail of the counts table
+head(counts_table)
+tail(counts_table)
+```
+
+
+```{r check statistics and structe}
+# Summary statistics for the dataset
+summary(counts_table)
+
+# Display the structure of the dataset
+str(counts_table)
+
+# Check for any missing values in the dataset
+any(is.na(counts_table))
+
+# Check if counts_table is a data frame or matrix
+is.data.frame(counts_table)
+is.matrix(counts_table)
+
+```
+
+
+```{r print first rows}
+
+# Print the first 10 rows and first 5 columns of the dataset
+counts_table[1:10, 1:5]
+
+```
+
+
+
+
