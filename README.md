@@ -2,7 +2,7 @@
 Alternative splicing in embryonic mouse stem cells
 
 The aim of this repository is for educational purpose only. 
-Students of The university of applied science Utrecht will create a pipeline for alternative splcing.
+Students of The university of applied science Utrecht will create a pipeline for alternative splicing.
 
 
 
