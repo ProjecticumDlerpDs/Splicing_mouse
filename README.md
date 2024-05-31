@@ -17,10 +17,9 @@ Pipeline and analysis with the following packages
 - [@timbitz/Whippet.jl](https://github.com/timbitz/Whippet.jl)
 
 
-## Authors
+## Author
 
 - Selina Dreesman [@Refelicus](https://www.github.com/Refelicus)
-- Renate Keijzer [@RenateKeijzer](https://github.com/RenateKeijzer)
 
 
 ## Extra information
