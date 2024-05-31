@@ -1,8 +1,7 @@
 
 # Alternative Splicing in Mouse embryonic Stem Cells
 
-
-Students of The university of applied science Utrecht will create a pipeline for alternative splicing
+Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing
 
 
 
