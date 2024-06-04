@@ -3,7 +3,7 @@
 
 Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
 
-## Fase 1 Data inspection with Seurat
+## Fase 1 Data inspection & preprocessing with Seurat
 - Load data & objectify
 - Data inspection
 - Normalization
