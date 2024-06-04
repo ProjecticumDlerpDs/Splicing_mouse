@@ -3,15 +3,17 @@
 
 Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
 
-#1 Data inspection with Seurat
+## Fase 1 Data inspection with Seurat
 - Load data & objectify
 - Data inspection
 - Normalization
 - Scaling
 - Principal component analysis
 - UMAP
+- Optimalisation script
 
-#2 Transcriptome identification & kwantification with Whippet
+## Fase 2 Transcriptome identification & kwantification with Whippet
+Fase 2 not reached yet
 
 
 
