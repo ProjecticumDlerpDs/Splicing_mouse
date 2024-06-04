@@ -29,7 +29,7 @@ Pipeline and analysis with the following packages
 
 ## Author
 
-- Selina Dreesman [@Refelicus](https://www.github.com/Refelicus)
+Selina Dreesman [@Refelicus](https://www.github.com/Refelicus)
 
 
 ## Extra information
