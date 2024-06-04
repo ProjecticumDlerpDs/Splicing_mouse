@@ -1,13 +1,24 @@
 
 # Alternative Splicing in Mouse embryonic Stem Cells
 
-Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing
+Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
+
+#1 Data inspection with Seurat
+- Load data & objectify
+- Data inspection
+- Normalization
+- Scaling
+- Principal component analysis
+- UMAP
+
+#2 Transcriptome identification & kwantification with Whippet
 
 
 
 ## Data
  
 Datasets are stored withing the Rstudio Server "/home/data/projecticum/splicing/data"
+
 ## Analysis
 
 Pipeline and analysis with the following packages
