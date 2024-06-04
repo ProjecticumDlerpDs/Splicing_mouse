@@ -37,3 +37,11 @@ Data origins
 
 - Article: High-throughput total RNA sequencing in single cells using VASA-seq (https://doi.org/10.1101/2021.09.15.460240)
 - Github:  [@hemberg-lab/VASAseq_2022](https://github.com/hemberg-lab/VASAseq_2022)
+
+
+
+## Version
+
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
