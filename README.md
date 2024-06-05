@@ -1,5 +1,5 @@
 
-# Alternative Splicing in Mouse embryonic Stem Cells
+# Alternative Splicing in Embryonic Mouse Cells
 
 Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
 
