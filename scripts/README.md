@@ -10,8 +10,8 @@ Script for data inspection, where functionalities as head, rows and summaries ar
 [SCtransform_analysis.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Sctransform_analysis.Rmd)
 Seurat script with SCtransform command as normalization step.
 
-[Seurat_clusters.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
-Script for data preprocessing:
+Script for data preprocessing: [Seurat_clusters.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
+
 - Load data & objectify
 - Data inspection & quality control
 - Normalization & scaling
