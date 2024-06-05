@@ -11,4 +11,10 @@ Script for data inspection, where functionalities as head, rows and summaries ar
 Seurat script with SCtransform command as normalization step.
 
 [Seurat_clusters.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
-Script for data preprocessing, normalisation, scaling, principal component analysis and UMAP clustering.
+Script for data preprocessing:
+
+-Load data & objectify
+-Data inspection & quality control
+-Normalization & scaling
+-Principal component analysis 
+-UMAP clustering.
