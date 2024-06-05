@@ -12,9 +12,8 @@ Seurat script with SCtransform command as normalization step.
 
 [Seurat_clusters.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
 Script for data preprocessing:
-
--Load data & objectify
--Data inspection & quality control
--Normalization & scaling
--Principal component analysis 
--UMAP clustering.
+- Load data & objectify
+- Data inspection & quality control
+- Normalization & scaling
+- Principal component analysis 
+- UMAP clustering.
