@@ -3,7 +3,7 @@
 
 Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
 
-## Fase 1 Data inspection & preprocessing with Seurat
+## Phase 1 Data inspection & preprocessing with Seurat
 Script [Seurat_clusters.rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
 
 - Load data & objectify
@@ -14,7 +14,7 @@ Script [Seurat_clusters.rmd](https://github.com/ProjecticumDlerpDs/Splicing_mous
 - UMAP cluster visualisation
 - Optimalisation script
 
-## Fase 2 Transcriptome identification & kwantification with Whippet
+## Phase 2 Transcriptome identification & Quantification with Whippet
 Fase 2 not reached yet
 
 
