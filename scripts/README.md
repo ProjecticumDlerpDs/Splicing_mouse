@@ -2,15 +2,16 @@
 
 Script for version control current package version [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
 
--Package Seurat version: 5.1.0	  
--Package here version: 1.0.1	  
--Package ggplot2 version: 3.5.1 	 
--Package ggrepel version: 0.9.5 	 
--Package dplyr version: 1.1.4 	 
--Package pheatmap version: 1.0.12	 
--Package RColorBrewer version: 1.1.3  
--Package tidyr version: 1.3.1 
--Package Matrix version: 1.6.5 
+- R version 4.3.3 (Angel food Cake)
+- Package Seurat version: 5.1.0	  
+- Package here version: 1.0.1	  
+- Package ggplot2 version: 3.5.1 	 
+- Package ggrepel version: 0.9.5 	 
+- Package dplyr version: 1.1.4 	 
+- Package pheatmap version: 1.0.12	 
+- Package RColorBrewer version: 1.1.3  
+- Package tidyr version: 1.3.1 
+- Package Matrix version: 1.6.5 
 
 
 
