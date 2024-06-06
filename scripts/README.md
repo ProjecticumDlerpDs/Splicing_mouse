@@ -1,6 +1,6 @@
 ## Descriptions of script functionality
 
-Script for version control current package version [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
+Script for version control checking current package version [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
 
 - R version 4.3.3 (Angel food Cake)
 - Package Seurat version: 5.1.0	  
@@ -15,10 +15,10 @@ Script for version control current package version [Check_package_version.R](htt
 
 
 
-Script for the convertion of CSV files to MTX files
+Script for the convertion of CSV files to MTX files for preprocessing & data loading
 [Convert_csv_mtx.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/convert_csv_mtx.R)
 
-Script for data inspection, where functionalities as head, rows and summaries are given.
+Script for data inspection, where functionalities as head, rows and summaries are given. 
 [Data inspection.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Data_inspection.Rmd)
 
 Seurat script with SCtransform command as normalization step.
