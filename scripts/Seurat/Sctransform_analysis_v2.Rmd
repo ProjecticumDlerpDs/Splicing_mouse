@@ -1,0 +1,151 @@
+---
+title: "Splicing Mouse embryo E8.5"
+author: "Selina Dreesman"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r load packages}
+library(Seurat)
+library(ggplot2)
+library(sctransform)
+library(here)
+library(Matrix)
+library(glmGamPoi)
+```
+
+
+
+```{r load data, include=FALSE}
+features <- read.csv(here("raw_data/data/e85_feature_metadata.csv.gz"))
+samples <- read.csv(here("raw_data/data/e85_sample_metadata.csv"))
+
+
+
+# load the mtx file
+counts <- ReadMtx(here("raw_data/data/e85_count_matrix.mtx.gz"), 
+                  here("raw_data/data/e85_sample_metadata.csv"),
+                  here("raw_data/data/e85_feature_metadata.csv.gz"),
+                  feature.sep = ",",
+                  cell.sep = ",",
+                  cell.column = 3,
+                  feature.column = 1,
+                  skip.cell = 1,
+                  skip.feature = 1)
+
+```
+
+
+```{r create object, echo=FALSE}
+# create object
+Mouse_SCT <- CreateSeuratObject(counts = counts, 
+                             project = "mouse-embryo", 
+                             min.cells = 3, 
+                             min.features = 7500)
+Mouse_SCT
+
+```
+
+```{r Apply SCtransform normalization, echo=FALSE}
+# store mitochondrial percentage in object meta data
+Mouse_SCT <- PercentageFeatureSet(Mouse_SCT, pattern = "^mt-", col.name = "percent.mt")
+
+# run sctransform
+Mouse_SCT <- SCTransform(Mouse_SCT, vars.to.regress = "percent.mt", verbose = FALSE)
+```
+
+```{r Violingplot, echo=FALSE, fig.width=15, fig.height=5}
+# Create a violin plot for to compare clusters
+VlnPlot(Mouse_SCT, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+
+```
+
+```{r feature scatterplots, echo=FALSE}
+# feature scatter
+cnt_ftr <- FeatureScatter(Mouse_SCT, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+cnt_mt <- FeatureScatter(Mouse_SCT, feature1 = "nCount_RNA", feature2 = "percent.mt")
+
+cnt_ftr
+cnt_mt
+
+```
+
+
+```{r identy top10 genes, echo=FALSE, fig.width=15, fig.height=5}
+# Find variable features 
+Mouse_SCT <- FindVariableFeatures(Mouse_SCT, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes
+top10 <- head(VariableFeatures(Mouse_SCT), 10)
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(Mouse_SCT) + 
+  theme(legend.position="top")
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE, xnudge=0, ynudge=0) + 
+  theme(legend.position="top")
+
+plot2
+```
+
+```{r dimensionality reduction PCA and umap embedding, echo=FALSE}
+# These are now standard steps in the Seurat workflow for visualization and clustering
+Mouse_SCT <- RunPCA(Mouse_SCT, verbose = FALSE)
+Mouse_SCT <- RunUMAP(Mouse_SCT, dims = 1:15, verbose = FALSE)
+
+Mouse_SCT <- FindNeighbors(Mouse_SCT, dims = 1:15, verbose = FALSE)
+Mouse_SCT <- FindClusters(Mouse_SCT, verbose = FALSE)
+
+DimPlot(Mouse_SCT, reduction = "umap", label = TRUE)
+```
+```{r PCA, echo=FALSE,fig.width=15, fig.height=5}
+
+print(Mouse_SCT[["pca"]], dims = 1:5, nfeatures = 5)
+
+ElbowPlot(Mouse_SCT)
+VizDimLoadings(Mouse_SCT, dim=1:2, reduction = "pca")
+
+```
+
+```{r Dimplot with PCA reduction, echo=FALSE}
+DimPlot(Mouse_SCT, reduction = "pca", label = TRUE)
+```
+
+```{r Find markers, echo=FALSE}
+cluster_13_markers <- FindMarkers(Mouse_SCT, ident.1 = 13)
+```
+```{r display markers, echo=FALSE}
+# Display the top markers
+print(head(cluster_13_markers))
+```
+
+```{r display markers, echo=FALSE, fig.width=15, fig.height=5}
+# Get the top 10 markers for cluster 13
+top_markers_13 <- head(rownames(cluster_13_markers), 10)
+print(top_markers_13)
+
+# Visualize the top marker genes
+FeaturePlot(Mouse_SCT, features = top_markers_13)
+VlnPlot(Mouse_SCT, features = top_markers_13, pt.size = 0.1)
+
+```
+
+
+```{r Featureplot, echo=FALSE, fig.width=15, fig.height=5}
+# Filter Seurat object to include only cells from cluster 13
+Mouse_SCT_cluster_13 <- subset(Mouse_SCT, idents = "13")
+
+# Get the top 10 markers for cluster 13
+top_markers_13 <- head(rownames(cluster_13_markers), 10)
+
+# Visualize the top marker genes with FeaturePlot
+FeaturePlot(Mouse_SCT_cluster_13, features = top_markers_13, pt.size = 0.1, cols = brewer.pal(n = 8, name = "Set1"), label = TRUE)
+
+```

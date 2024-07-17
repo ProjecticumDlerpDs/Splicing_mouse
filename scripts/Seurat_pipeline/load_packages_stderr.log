@@ -1,0 +1,6 @@
+Error: package or namespace load failed for ‘dplyr’ in dyn.load(file, DLLpath = DLLpath, ...):
+ unable to load shared object '/home/1813928/R/x86_64-pc-linux-gnu-library/4.3/rlang/libs/rlang.so':
+  /home/1813928/R/x86_64-pc-linux-gnu-library/4.3/rlang/libs/rlang.so: undefined symbol: EXTPTR_PROT
+In addition: Warning message:
+package ‘dplyr’ was built under R version 4.3.3 
+Execution halted

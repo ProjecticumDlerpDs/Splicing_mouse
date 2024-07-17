@@ -1,0 +1,175 @@
+---
+title: "Splicing Mouse embryo E8.5"
+author: "Selina Dreesman"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load packages, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(pheatmap)
+library(tidyr)
+library(RColorBrewer)
+library(ggrepel)
+library(Seurat)
+library(Matrix)
+library(here)
+
+```
+
+```{r load data, include=FALSE}
+features <- read.csv(here("raw_data/data/e85_feature_metadata.csv.gz"))
+samples <- read.csv(here("raw_data/data/e85_sample_metadata.csv"))
+
+
+
+# load the mtx file
+counts <- ReadMtx(here("raw_data/data/e85_count_matrix.mtx.gz"), 
+                  here("raw_data/data/e85_sample_metadata.csv"),
+                  here("raw_data/data/e85_feature_metadata.csv.gz"),
+                  feature.sep = ",",
+                  cell.sep = ",",
+                  cell.column = 3,
+                  feature.column = 1,
+                  skip.cell = 1,
+                  skip.feature = 1)
+
+```
+
+```{r seurat, include=FALSE}
+# create a seurat object
+seurat <- CreateSeuratObject(counts = counts, 
+                             project = "mouse-embryo", 
+                             min.cells = 3, 
+                             min.features = 200)
+seurat
+
+
+```
+
+
+```{r data quality, echo=FALSE, fig.width=15, fig.height=5}
+# Calculate percentage of mitochondrial genes for the subset
+seurat[["percent.mt"]] <- PercentageFeatureSet(seurat, pattern = "^mt-")
+
+# Create a violin plot for the subset
+VlnPlot(seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+
+#view identities
+table(Idents(seurat))
+```
+
+
+```{r feature scatterplots, echo=FALSE}
+# feature scatter
+cnt_ftr <- FeatureScatter(seurat, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+cnt_mt <- FeatureScatter(seurat, feature1 = "nCount_RNA", feature2 = "percent.mt")
+
+cnt_ftr
+cnt_mt
+
+```
+
+```{r subset data, echo=FALSE,  fig.width=15, fig.height=5}
+# subset the data
+seurat <- subset(seurat, subset = nFeature_RNA > 2000 & nFeature_RNA < 12000 & percent.mt < 5)
+
+# normalize
+seurat <- NormalizeData(seurat, normalization.method = "LogNormalize", scale.factor = 10000)
+
+# Create a violin plot for normalization check
+VlnPlot(seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+
+```
+
+```{r identy top10 genes, echo=FALSE, fig.width=15, fig.height=5}
+# Find variable features 
+seurat <- FindVariableFeatures(seurat, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes
+top10 <- head(VariableFeatures(seurat), 10)
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(seurat) + 
+  theme(legend.position="top")
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE, xnudge=0, ynudge=0) + 
+  theme(legend.position="top")
+
+plot2
+```
+
+```{r scaling, echo=FALSE}
+
+all.genes <- rownames(seurat)
+
+seurat <- ScaleData(seurat, features = all.genes)
+
+# result stored in seurat[["RNA"]]$scale.data
+
+```
+
+```{r PCA, echo=FALSE,fig.width=15, fig.height=5}
+
+seurat <- RunPCA(seurat, features = VariableFeatures(object = seurat), verbose = FALSE)
+
+print(seurat[["pca"]], dims = 1:5, nfeatures = 5)
+
+ElbowPlot(seurat)
+VizDimLoadings(seurat, dim=1:2, reduction = "pca")
+
+```
+
+
+```{r dimensionality reduction PCA and umap embedding, echo=FALSE}
+# These are now standard steps in the Seurat workflow for visualization and clustering
+seurat <- RunPCA(seurat, features = VariableFeatures(object = seurat))
+seurat <- RunUMAP(seurat, dims = 1:15, verbose = FALSE)
+
+seurat <- FindNeighbors(seurat, dims = 1:15, verbose = FALSE)
+seurat <- FindClusters(seurat, verbose = FALSE)
+DimPlot(seurat, label = TRUE)
+```
+
+```{r Dimplot with PCA reduction, echo=FALSE}
+DimPlot(seurat, reduction = "pca", label = TRUE)
+```
+
+```{r Dimplot with PCA reduction, echo=FALSE}
+cluster_13_markers <- FindMarkers(seurat, ident.1 = 13)
+```
+
+```{r display markers, echo=FALSE}
+# Display the top markers
+print(head(cluster_13_markers))
+```
+
+```{r display markers, echo=FALSE, fig.width=15, fig.height=5}
+# Get the top 10 markers for cluster 13
+top_markers_13 <- head(rownames(cluster_13_markers), 10)
+print(top_markers_13)
+
+# Visualize the top marker genes
+FeaturePlot(seurat, features = top_markers_13)
+VlnPlot(seurat, features = top_markers_13, pt.size = 0.1)
+
+```
+
+```{r Featureplot, echo=FALSE, fig.width=15, fig.height=5}
+# Filter Seurat object to include only cells from cluster 13
+seurat_cluster_13 <- subset(seurat, idents = "13")
+
+# Get the top 10 markers for cluster 13
+top_markers_13 <- head(rownames(cluster_13_markers), 10)
+
+# Visualize the top marker genes with FeaturePlot
+FeaturePlot(seurat_cluster_13, features = top_markers_13, pt.size = 0.1, cols = brewer.pal(n = 8, name = "Set1"), label = TRUE)
+
+```
