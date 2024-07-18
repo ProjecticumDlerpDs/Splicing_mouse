@@ -1,4 +1,4 @@
-## Descriptions of script functionality
+## Descriptions of scripts functionality
 
 Folders
 - Feedback
@@ -10,6 +10,7 @@ Containing scripts that are still worked on and are not finalized.
 - Finished
 Containing scripts that are finished, and can be used for analysis.
 
+## Version control scripts
 
 [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
 for version control checking current package version 
