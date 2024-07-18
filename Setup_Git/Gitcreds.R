@@ -6,6 +6,6 @@ library(gitcreds)
 gitcreds_set()
 
 # add this in terminal for configuration of personal email and github name
-# git config --global user.email "selina.dreesman@outlook.com"
-# git config --global user.name "Refelicus"
+# git config --global user.email e.g. "USERNAME@email.com"
+# git config --global user.name e.g. "refelicus"
 

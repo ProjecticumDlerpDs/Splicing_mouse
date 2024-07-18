@@ -1,20 +1,18 @@
 
 # Alternative Splicing in Embryonic Mouse Cells
 
-Goal is to write a pipeline that can detect different types of RNA withing dataset E8.5 clusters for the determination of alternative splicing.
+Goal is to write a pipeline that can cluster data based on similarities withing dataset E8.5, and to find a suitable analysis method for the determination of alternative splicing of RNA. 
 
-## Phase 1 Data inspection & preprocessing with Seurat
-Script [Seurat_clusters.rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
 
-- Load data & objectify
-- Data inspection
-- Normalization
-- Scaling
-- Principal component analysis
-- UMAP cluster visualisation
-- Optimalisation script
+
+## Phase 1 Data inspection & clustering with Seurat
+Clustering data in dataset E8.5 with package [@satijalab/seurat](https://github.com/satijalab/seurat)
+
+
+- [Seurat_pipeline](https://github.com/ProjecticumDlerpDs/Splicing_mouse/tree/main/scripts/Finished/Seurat_pipeline)
 
 ## Phase 2 Transcriptome identification & Quantification with Whippet
+Whippet package [@timbitz/Whippet.jl](https://github.com/timbitz/Whippet.jl)
 Fase 2 not reached yet
 
 
@@ -27,13 +25,10 @@ Datasets are stored withing the Rstudio Server "/home/data/projecticum/splicing/
 
 Pipeline and analysis with the following packages
 
-- [@satijalab/seurat](https://github.com/satijalab/seurat)
-- [@timbitz/Whippet.jl](https://github.com/timbitz/Whippet.jl)
 
 
-## Author
 
-Selina Dreesman [@Refelicus](https://www.github.com/Refelicus)
+<!-- Table of contents -->
 
 
 ## Extra information
@@ -49,3 +44,7 @@ Data origins
 R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
 Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
+
+## Author
+
+Selina Dreesman [@Refelicus](https://www.github.com/Refelicus)

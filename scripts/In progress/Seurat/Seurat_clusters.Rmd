@@ -11,6 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Step 1: Load packages
 
 ```{r load packages, include=FALSE}
 library(dplyr)
@@ -24,6 +25,8 @@ library(Matrix)
 library(here)
 
 ```
+
+Step 2: Load Data & create object
 
 ```{r load data, include=FALSE}
 features <- read.csv(here("raw_data/data/e85_feature_metadata.csv.gz"))
@@ -49,12 +52,13 @@ counts <- ReadMtx(here("raw_data/data/e85_count_matrix.mtx.gz"),
 seurat <- CreateSeuratObject(counts = counts, 
                              project = "mouse-embryo", 
                              min.cells = 3, 
-                             min.features = 200)
+                             min.features = 2000)
 seurat
 
 
 ```
 
+Step 3: data inspection & quality control
 
 ```{r data quality, echo=FALSE, fig.width=15, fig.height=5}
 # Calculate percentage of mitochondrial genes for the subset
@@ -65,8 +69,10 @@ VlnPlot(seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol =
 
 #view identities
 table(Idents(seurat))
-```
 
+#view counts table
+print(counts)
+```
 
 ```{r feature scatterplots, echo=FALSE}
 # feature scatter
@@ -78,6 +84,8 @@ cnt_mt
 
 ```
 
+
+Step 4: Normalize and scale data
 ```{r subset data, echo=FALSE,  fig.width=15, fig.height=5}
 # subset the data
 seurat <- subset(seurat, subset = nFeature_RNA > 2000 & nFeature_RNA < 12000 & percent.mt < 5)
@@ -116,6 +124,8 @@ seurat <- ScaleData(seurat, features = all.genes)
 
 ```
 
+
+Step 5: PCA analysis & UMAP
 ```{r PCA, echo=FALSE,fig.width=15, fig.height=5}
 
 seurat <- RunPCA(seurat, features = VariableFeatures(object = seurat), verbose = FALSE)
@@ -128,48 +138,16 @@ VizDimLoadings(seurat, dim=1:2, reduction = "pca")
 ```
 
 
+
 ```{r dimensionality reduction PCA and umap embedding, echo=FALSE}
 # These are now standard steps in the Seurat workflow for visualization and clustering
-seurat <- RunPCA(seurat, features = VariableFeatures(object = seurat))
-seurat <- RunUMAP(seurat, dims = 1:15, verbose = FALSE)
+seurat <- RunUMAP(seurat, dims = 1:30, verbose = FALSE)
 
-seurat <- FindNeighbors(seurat, dims = 1:15, verbose = FALSE)
+seurat <- FindNeighbors(seurat, dims = 1:30, verbose = FALSE)
 seurat <- FindClusters(seurat, verbose = FALSE)
 DimPlot(seurat, label = TRUE)
 ```
 
 ```{r Dimplot with PCA reduction, echo=FALSE}
 DimPlot(seurat, reduction = "pca", label = TRUE)
-```
-
-```{r Dimplot with PCA reduction, echo=FALSE}
-cluster_13_markers <- FindMarkers(seurat, ident.1 = 13)
-```
-
-```{r display markers, echo=FALSE}
-# Display the top markers
-print(head(cluster_13_markers))
-```
-
-```{r display markers, echo=FALSE, fig.width=15, fig.height=5}
-# Get the top 10 markers for cluster 13
-top_markers_13 <- head(rownames(cluster_13_markers), 10)
-print(top_markers_13)
-
-# Visualize the top marker genes
-FeaturePlot(seurat, features = top_markers_13)
-VlnPlot(seurat, features = top_markers_13, pt.size = 0.1)
-
-```
-
-```{r Featureplot, echo=FALSE, fig.width=15, fig.height=5}
-# Filter Seurat object to include only cells from cluster 13
-seurat_cluster_13 <- subset(seurat, idents = "13")
-
-# Get the top 10 markers for cluster 13
-top_markers_13 <- head(rownames(cluster_13_markers), 10)
-
-# Visualize the top marker genes with FeaturePlot
-FeaturePlot(seurat_cluster_13, features = top_markers_13, pt.size = 0.1, cols = brewer.pal(n = 8, name = "Set1"), label = TRUE)
-
 ```
