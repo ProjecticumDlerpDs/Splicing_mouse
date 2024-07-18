@@ -2,13 +2,13 @@
 
 Folders
 - Feedback
-# containing scripts that have been reviewed with comments for improvement.
+Containing scripts that have been reviewed with comments for improvement.
 
 - In progress
-# Containing scripts that are still worked on and are not finalized.
+Containing scripts that are still worked on and are not finalized.
 
 - Finished
-# containing scripts that are finished, and can be used for analysis.
+Containing scripts that are finished, and can be used for analysis.
 
 
 [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
