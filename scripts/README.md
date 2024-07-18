@@ -1,27 +1,14 @@
 ## Descriptions of script functionality
 
+Folders
+- Feedback
+# containing scripts that have been reviewed with comments for improvement.
 
+- In progress
+# Containing scripts that are still worked on and are not finalized.
 
-[Convert_csv_mtx.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/convert_csv_mtx.R)
-for the convertion of CSV files to MTX files for preprocessing & data loading
-
-
-[Data inspection.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Data_inspection.Rmd)
-for data inspection, where functionalities as head, rows and summaries are given. 
-
-
-[SCtransform_analysis.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Sctransform_analysis.Rmd)
-with SCtransform command as normalization step.
-
-[Seurat_clusters.Rmd](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Seurat_clusters.Rmd)
-for data preprocessing w/ Seurat: 
-
-
-- Load data & objectify
-- Data inspection & quality control
-- Normalization & scaling
-- Principal component analysis 
-- UMAP clustering.
+- Finished
+# containing scripts that are finished, and can be used for analysis.
 
 
 [Check_package_version.R](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/scripts/Check_package_versions.R)
