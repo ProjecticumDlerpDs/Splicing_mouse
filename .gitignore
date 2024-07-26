@@ -4,5 +4,6 @@
 .RData
 .Ruserdata
 data/raw_data
-data/rds_files
+data/rds_files/
+
 
