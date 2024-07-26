@@ -3,5 +3,6 @@
 .Rhistory
 .RData
 .Ruserdata
-data/
+data/raw_data
+data/rds_files
 
