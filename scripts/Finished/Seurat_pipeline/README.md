@@ -45,3 +45,6 @@ Restarting server is advisable before running PCA analysis!
 9 UMAP
 Visualisation umap & PCA with dimension reduction set to PCA
 
+10 Individual Cluster analysis
+Visualisation and identification of genes in subset clusters
+
