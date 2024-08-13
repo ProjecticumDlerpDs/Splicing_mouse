@@ -1,17 +1,19 @@
 ---
-title: "Splicing Mouse embryo E8.5"
+title: "CLustering Mouse embryo E8.5"
 author: "Selina Dreesman"
 date: "`r Sys.Date()`"
-output: 
-  pdf_document: default
+output:
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Step 1: Load packages
+### Step 1: Load packages
+
+Script laadt de volgende packages in met de library functie om ze toe te kunnen passen voor analyse:- (dplyr)- (ggplot2) - (pheatmap) - (tidyr)- (RColorBrewer)- (ggrepel) - (Seurat) - (Matrix) - (here)
 
 ```{r load packages, include=FALSE}
 library(dplyr)
@@ -26,18 +28,22 @@ library(here)
 
 ```
 
-Step 2: Load Data & create object
+### Step 2: Load Data & create object
+
+Deelvraag: in welk format kan mijn data ingeladen worden?
+
+Data wordt als csv bestand met de "read" functie ingeladen tot object en bewaard in het werkgeheugen. Vervolgens worden de data als object genaamd "counts" ingeladen samen met een matrix tabel (mtx.file). Als laatste wordt dit met behulp van de Seurat packages een object gemaakt als preprocessing voor de data analyse, afkapwaarde is vanaf mininmaal 2000 features (genen).
 
 ```{r load data, include=FALSE}
-features <- read.csv(here("raw_data/data/e85_feature_metadata.csv.gz"))
-samples <- read.csv(here("raw_data/data/e85_sample_metadata.csv"))
+features <- read.csv(here("data/raw_data/e85_feature_metadata.csv.gz"))
+samples <- read.csv(here("data/raw_data/e85_sample_metadata.csv"))
 
 
 
 # load the mtx file
-counts <- ReadMtx(here("raw_data/data/e85_count_matrix.mtx.gz"), 
-                  here("raw_data/data/e85_sample_metadata.csv"),
-                  here("raw_data/data/e85_feature_metadata.csv.gz"),
+counts <- ReadMtx(here("data/raw_data/e85_count_matrix.mtx.gz"), 
+                  here("data/raw_data/e85_sample_metadata.csv"),
+                  here("data/raw_data/e85_feature_metadata.csv.gz"),
                   feature.sep = ",",
                   cell.sep = ",",
                   cell.column = 3,
@@ -58,7 +64,13 @@ seurat
 
 ```
 
-Step 3: data inspection & quality control
+### Step 3: data inspection & quality control
+
+Deelvraag: Welke kwaliteitsstappen heb ik nodig voor een data analyse?
+
+De data moet geinspecteerd worden en gecontroleerd worden op inhoudt. Een manier om dit te doen is met de Seurat package. Deze package heeft ingebouwde functies om de data te controleren op inhoud & data vervuiling (bijvoorbeeld mitochondriaal materiaal).
+
+Dit kan met behulp van het Patroon -mt wordt opgezocht in het object "seurat". Vervolgens wordt het uitgeplot in een violinplot, net als de functies nFeature_RNA en nCount_RNA. Dit als kwaliteitscheck hoe de data verdeeld is.
 
 ```{r data quality, echo=FALSE, fig.width=15, fig.height=5}
 # Calculate percentage of mitochondrial genes for the subset
@@ -66,13 +78,21 @@ seurat[["percent.mt"]] <- PercentageFeatureSet(seurat, pattern = "^mt-")
 
 # Create a violin plot for the subset
 VlnPlot(seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+```
 
+Violinplot die de verhouding weergeeft van de data aan de hand van de volgende features x-as= datalabel, y-as= aantal : - nFeature_RNA; het aantal genen in de dataset - nCount_RNA; het aantal moleculen in de dataset - percent.mt; het percentage mitochondriaal genexpressie
+
+De data toont een verdeling aan volgens het vioolprincipe, waarbij het begint vanaf 2000 features. Optimaal zou zoveel mogelijk features meenemen beter zijn echter vanwege maximale servercapaciteiten gekozen voor 2000 features om de server te ontlichten en crashes te voorkomen.
+
+Identificatie van inhoud - Weergave het aantal per datalabel
+
+```{r data identification, echo=FALSE, fig.width=15, fig.height=5}
 #view identities
 table(Idents(seurat))
 
-#view counts table
-print(counts)
 ```
+
+Feature Scatter: Inladen van twee nieuwe objecten, waarvan de pearson correlatie geanalyseerd wordt. Dit om aan te tonen of de data in de dataset wel overeenkomt met de verwachtingen, geen data verloren of vervuild is met andere data. De andere genaamd cnt_mt is om aan te tonen dat de set niet vervuild is met mitochondriaal materiaal.
 
 ```{r feature scatterplots, echo=FALSE}
 # feature scatter
@@ -84,8 +104,15 @@ cnt_mt
 
 ```
 
+cnt_ftr heeft een correlatie van 0.97 wat aantoont dat het een sterke correlatie heeff, aannemelijk is dat de data zuiver is en niet ontbreekt of vervuild is met andere data.
 
-Step 4: Normalize and scale data
+cnt_mt heeft een correlatie van -0.06 wat aantoont dat het een negatief lage correlatie heeft, we kunnen aannemen dat de dataset weinig vervuild is met mitochondriaal materiaal.
+
+### Step 4: Normalize and scale data
+Deelvraag: Welke methode van normaliseren kan ik toepassen? Seurat biedt momenteel twee opties aan SCtransform en de standaard LogNormalize, echter vanwege de capaciteit van de server gekozen voor de standaard normalisatie met als vaste parameter 10000. 
+
+Data wordt geoptimalizeerd voor betere processing, afkapwaarde zijn vanaf \>2000 en maximaal \<12000 features, percentaal mitochondriaal is \< 5 % Dit ter optimalisatie van de dataset, preprocessing voor de volgende stappen, mindere belasting voor de server en een zo groot mogelijk bereik mee te nemen. Data wordt genormalizeerd met de LogNormalize functie met een factor 10000, hiervoor gekozen omdat dit standaard wordt aangegeven in de Seurat analyse.
+
 ```{r subset data, echo=FALSE,  fig.width=15, fig.height=5}
 # subset the data
 seurat <- subset(seurat, subset = nFeature_RNA > 2000 & nFeature_RNA < 12000 & percent.mt < 5)
@@ -98,7 +125,16 @@ VlnPlot(seurat, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol =
 
 ```
 
-```{r identy top10 genes, echo=FALSE, fig.width=15, fig.height=5}
+Violinplot die de verhouding weergeeft van de data aan de hand van de volgende features x-as= datalabel, y-as= aantal : - nFeature_RNA; het aantal genen in de dataset - nCount_RNA; het aantal moleculen in de dataset - percent.mt; het percentage mitochondriaal genexpressie
+
+Opnieuw gegeneerd een violingplot dit ter aantoning dat de preprocessing goed verlopen is.
+
+### Step 5: identifying top genes
+Deelvraag: Hoeveel genen neem ik mee voor de PCA analyse? 
+
+Het identificeren van genen uit de dataset en een selectie meenemen naar de volgende analyse stap. Selectiemethode is "vst" dat de data op basis van logaritmische variatie standardaardiseert en hiermee een verband schept tussen de data en gen met de hoogste expressie. Gekozen voor een aantal van 2000 hoogste variabelen ter ontlasting van de server en na overleg met opdrachtgever dat dit een standaard keuze is om mee te nemen. Echter betekent dat er wel 42883 geexcludeerd worden, dit vanwege het bereik van de dataset.
+
+```{r identify top10 genes, echo=FALSE, fig.width=15, fig.height=5}
 # Find variable features 
 seurat <- FindVariableFeatures(seurat, selection.method = "vst", nfeatures = 2000)
 
@@ -114,6 +150,12 @@ plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE, xnudge=0, ynudg
 plot2
 ```
 
+Plot de variabele waarden van de genexpressie. X-as = average expression, y-as is standaard variatie. - De zwarte stippen staan voor de variabelen die niet variabel zijn en dus niet mee zullen genomen naar de volgende processing. Voordeel ontlasting van de server, nadeel minder data mee. Echter vallen deze in de lage expressie radius en willen we vooral kijken naar de hoge expressie. - De rode stippen zijn de variabelen van de 2000 hoogste expressie. Daarvan zijn de 10 met de hoogste expressie weergeven in de plot.
+
+### Step 6: scaling genes
+Geen deelvraag, wel cruciale stap voor preprocessing PCA analyse.
+Genen worden op basis van waarden met de geanalyseerde data gescaled. Dit betekent dat de genen die voorkomen in de set aan de data gelinkt worden.
+
 ```{r scaling, echo=FALSE}
 
 all.genes <- rownames(seurat)
@@ -124,8 +166,10 @@ seurat <- ScaleData(seurat, features = all.genes)
 
 ```
 
+### Step 7: PCA analysis & UMAP
+Hoe controleer ik mijn PCA analyse en welke componenten ga ik vergelijken? 
+De data wordt verdeeld in componenten op basis van de grootste variatie middels PCA analyse. De data visualiseren middels UMAP en DIMplot. De controle van de PCA analyse kan middels een SCREE plot en een dimplot om aan te tonen dat data daadwerkelijk in componenten gedeeld is en genen geanalyseerd zijn. (Waarde geven) Gekozen voor 15 componenten na overleg met de opdrachtgever, wegens alleen interesse in een afgeschaalde bereik.
 
-Step 5: PCA analysis & UMAP
 ```{r PCA, echo=FALSE,fig.width=15, fig.height=5}
 
 seurat <- RunPCA(seurat, features = VariableFeatures(object = seurat), verbose = FALSE)
@@ -137,17 +181,25 @@ VizDimLoadings(seurat, dim=1:2, reduction = "pca")
 
 ```
 
+Elbowplot: Data opgedeeld in 20 PCA componenten: x-as = componenten aantal, y-as= standaard deviatie (grootse variatie) Print Seurat: Van 5 PCA componentende hoogste positieve waarden en hoogste negatieve waarden weergeven. VizDimloading: x-as= negatieve waarden & PC_component, y-as = naam gen extron/intron
 
+Dit ter controle van de PCA analyse en of het overeenkomt/geen overlappingen zijn.
 
-```{r dimensionality reduction PCA and umap embedding, echo=FALSE}
-# These are now standard steps in the Seurat workflow for visualization and clustering
-seurat <- RunUMAP(seurat, dims = 1:30, verbose = FALSE)
-
-seurat <- FindNeighbors(seurat, dims = 1:30, verbose = FALSE)
-seurat <- FindClusters(seurat, verbose = FALSE)
-DimPlot(seurat, label = TRUE)
-```
+Visualiseren van de PCA middels UMAP methode, dit om aan te tonen dat data geclusterd is.
 
 ```{r Dimplot with PCA reduction, echo=FALSE}
 DimPlot(seurat, reduction = "pca", label = TRUE)
 ```
+
+Dimplot waarvan x-as= PC_1 en y-as= PC_2. Twee PC componenten uitgeplot tegenover elkaar om overlapping/verschillen aan te tonen.
+
+```{r dimensionality reduction PCA and umap embedding, echo=FALSE}
+# These are now standard steps in the Seurat workflow for visualization and clustering
+seurat <- RunUMAP(seurat, dims = 1:15, verbose = FALSE)
+
+seurat <- FindNeighbors(seurat, dims = 1:15, verbose = FALSE)
+seurat <- FindClusters(seurat, verbose = FALSE)
+DimPlot(seurat, label = TRUE)
+```
+
+Visualisatie van de PCA analyse met UMAP methode, nieuwe berekening laat clusters zien. Bedoeld voor snelle weergave van de verdeling. Legenda van 26 clusters x-as= umap_1 y-as= umap_2; heeft geen definitiefe betekenis, is alleen om een indicatie te geven hoe de clusters zich verhouden. Geen definitieve waarden.
