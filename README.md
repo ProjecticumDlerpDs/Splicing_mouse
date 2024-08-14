@@ -4,7 +4,7 @@
 Goal is to write a pipeline that can cluster data based on similarities withing dataset E8.5, and to find a suitable analysis method for the determination of alternative splicing of RNA. 
 
  This Github repository will function as an online labjournal where scripts/data are stored.
- Additional not all data can be transfered to github due to size limitations. See gitignore for which files are excluded. 
+ Additional not all data can be transfered to github due to size limitations. See [gitignore](https://github.com/ProjecticumDlerpDs/Splicing_mouse/blob/main/.gitignore) for which files are excluded. 
  Belowd is noted where the data is stored and can be traced from the HU Rstudio server.
 
 
