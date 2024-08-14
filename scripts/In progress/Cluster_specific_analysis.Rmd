@@ -1,0 +1,28 @@
+---
+title: "Cluster specific analysis"
+author: "Selina Dreesman"
+date: "2024-08-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+
+
+```{r pressure, echo=FALSE}
+library(here)
+library(knitr)
+
+# Toon de afbeeldingen
+include_graphics(c(
+  here("data/plots/10_top10markers_C1.png"),
+  here("data/plots/10_topmarkers_C1.png"),
+  here("data/plots/10_Vlnplot_cluster_C1.png")
+))
+```

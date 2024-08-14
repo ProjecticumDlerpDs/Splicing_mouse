@@ -1,5 +1,5 @@
 # Laad CSV-bestand 'e85_count_matrix.csv.gz' in
-data <- read.csv("~/projecticum/splicing/raw_data/data/e75_count_matrix.csv", header = TRUE, row.names = 1)
+data <- read.csv("~/projecticum/Splicing_mouse/data/raw_data/e85_count_matrix.csv.gz", header = TRUE, row.names = 1)
 
 library(Matrix)
 
@@ -10,8 +10,8 @@ data_matrix <- as.matrix(data)
 data_dgCMatrix <- as(data_matrix, "dgCMatrix")
 
 # Sla bestand op als e85_count_matrix.mtx
-writeMM(data_dgCMatrix, "~/projecticum/splicing/raw_data/data/e75_count_matrix.mtx")
+writeMM(data_dgCMatrix, "~/projecticum/Splicing_mouse/data/raw_data/e85_convert_count_matrix.mtx.gz")
 
 # Controleer of het bestand is opgeslagen
-file.exists("~/projecticum/splicing/raw_data/data/e75_count_matrix.mtx")
+file.exists("~/projecticum/Splicing_mouse/data/raw_data/e85_convert_count_matrix.mtx.gz")
 
