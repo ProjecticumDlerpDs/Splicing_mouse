@@ -8,7 +8,7 @@
 # Lijst van packages
 packages <- c("Seurat", "here", "ggplot2", "ggrepel", "dplyr", "pheatmap", "RColorBrewer", "Matrix")
 
-# Functie om package versie te controleren
+# Functie om package versie te controleren 
 check_package_version <- function(pkg, cran_db) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     message(paste("Package", pkg, "is not installed."))
