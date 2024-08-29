@@ -4,9 +4,9 @@ Pipeline containing multiple R scripts, labeled with number first, then function
 Same for saving RDS files and images, number output corresponding with the script.
 
 To load pipeline enter in console, not terminal! Due to dependency issue console R.4.3.3. - terminal 4.1.2
-source("~/projecticum/splicing/scripts/In Progress/Seurat_pipeline/run_pipeline.R")
+source("~/Splicing_mouse/scripts/In Progress/Seurat_pipeline/run_pipeline.R")
 
-Output are saved under ~/splicing_mouse/data
+Output are saved under ~/Splicing_mouse/data
    - /plots
    - /raw_data
    - /rds_files
