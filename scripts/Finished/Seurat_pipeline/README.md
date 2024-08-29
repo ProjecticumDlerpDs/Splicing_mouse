@@ -6,10 +6,13 @@ Same for saving RDS files and images, number output corresponding with the scrip
 To load pipeline enter in console, not terminal! Due to dependency issue console R.4.3.3. - terminal 4.1.2
 source("~/projecticum/splicing/scripts/In Progress/Seurat_pipeline/run_pipeline.R")
 
-Output are saved under ~projecticum/splicing/data
+Output are saved under ~/splicing_mouse/data
    - /plots
    - /raw_data
    - /rds_files
+
+## Data
+Accession number: [GSE176588](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM5369519)
 
 ## Pipeline:
 
